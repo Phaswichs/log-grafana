@@ -59,7 +59,7 @@ else
 
 // สร้าง Serilog Logger
 Serilog.Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
+    .MinimumLevel.Information()
     .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.OpenTelemetry(opts =>
     {
