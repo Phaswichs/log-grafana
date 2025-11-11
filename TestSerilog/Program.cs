@@ -131,6 +131,9 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
 
+app.MapRazorPages();
+app.MapGet("/", () => Results.Redirect("/Index"));
+
 // Test log endpoint
 app.MapGet("/log", () =>
 {
