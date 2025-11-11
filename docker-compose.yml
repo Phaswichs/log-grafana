@@ -1,0 +1,49 @@
+﻿version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:80"
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - loki
+
+  services:
+    otel-collector:
+      image: otel/opentelemetry-collector-contrib:latest
+      volumes:
+        - ./otel-collector-config.yaml:/etc/otel/config.yaml
+      ports:
+        - "4317:4317" # This port listens for your app's data
+  # loki:
+  #   image: grafana/loki:2.9.1
+  #   command: -config.file=/etc/loki/local-config.yaml
+  #   ports:
+  #     - "3100:3100"
+  #   volumes:
+  #     - ./loki-config.yaml:/etc/loki/local-config.yaml
+  #     - ./loki-data:/loki
+  #   user: "10001:10001"
+
+  # promtail:
+  #   image: grafana/promtail:2.9.1
+  #   volumes:
+  #     - ./promtail-config.yaml:/etc/promtail/config.yaml:ro
+  #     - ./logs:/var/log/myapp:ro
+  #   depends_on:
+  #     - loki
+
+  # grafana:
+  #   image: grafana/grafana:10.0.0
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - loki
+
+volumes:
+  loki-data:
+    driver: local
